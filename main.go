@@ -71,7 +71,7 @@ func main() {
 	router.HandleFunc("/api/shipments/{id}", getSingleShipment).Methods("GET")
 
 	// Initialize a server
-	fmt.Printf("Starting server at port 8081\n")
+	fmt.Printf("Starting server at port 8801\n")
 	log.Fatal(http.ListenAndServe(":8801", router))
 
 }
