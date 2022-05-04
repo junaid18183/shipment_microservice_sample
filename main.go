@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -32,19 +33,19 @@ func getShipments(res http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(res).Encode(shipment)
 }
 
-// // function to get a single shipment
-// func getSingleShipment(res http.ResponseWriter, req *http.Request) {
-// 	res.Header().Set("Content-Type", "application/json")
-// 	params := mux.Vars(req)
-// 	for _, item := range shipment {
-// 		if item.ID == params["id"] {
-// 			json.NewEncoder(res).Encode(item) // we are sending matched course in json format
-// 			return
-// 		}
-// 	}
-// 	json.NewEncoder(res).Encode("No course found")
+// function to get a single shipment
+func getSingleShipment(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(req)
+	for _, item := range shipment {
+		if strconv.Itoa(item.ID) == params["id"] {
+			json.NewEncoder(res).Encode(item)
+			return
+		}
+	}
+	json.NewEncoder(res).Encode("Not found")
 
-// }
+}
 
 func main() {
 
@@ -60,12 +61,14 @@ func main() {
 		log.Fatal("Error during Unmarshal(): ", err)
 	}
 
+	fmt.Println(string(shipment[0].ID))
+
 	//Initialize router
 	router := mux.NewRouter()
 
 	// Handel the routes
 	router.HandleFunc("/api/shipments", getShipments).Methods("GET")
-	// router.HandleFunc("/api/shipments/{id}", getSingleShipment).Methods("GET")
+	router.HandleFunc("/api/shipments/{id}", getSingleShipment).Methods("GET")
 
 	// Initialize a server
 	fmt.Printf("Starting server at port 8081\n")
