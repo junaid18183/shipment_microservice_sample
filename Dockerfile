@@ -4,7 +4,7 @@ RUN mkdir /build
 ADD . /build/
 WORKDIR /build 
 RUN go mod download
-RUN go build -o shipment
+RUN go build -o /shipment
 
 EXPOSE 8801
 
